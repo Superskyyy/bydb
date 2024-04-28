@@ -51,10 +51,13 @@ streamWrite.tag("startTime", Value.longTagValue(task.getStartTime()));
 streamWrite.tag("endTime", Value.longTagValue(task.getEndTime()));
 CompletableFuture<Void> future = processor.add(streamWrite);
 			
-```		
+			
 			
 StreamQuery task_query = new StreamQuery(group, task_stream, ImmutableSet.of("taskId", "taskType", "jobId", "numCPU", "startTime", "endTime"));
 task_query.and(PairQueryCondition.StringQueryCondition.eq("jobId", jobId));
 task_query.and(PairQueryCondition.StringQueryCondition.eq("taskType", "NORMAL_TASK"));
 task_query.setLimit(2000);
 StreamQueryResponse task_resp = client.query(task_query);
+			
+```		
+
