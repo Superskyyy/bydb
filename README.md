@@ -1,7 +1,7 @@
 
 ![696B332D-8FB0-4E73-A729-16B40578A642](https://github.com/Superskyyy/bydb/assets/26076517/5e85d08d-eb8a-4dda-91d1-379469de7504)
 ![CD950360-CBDF-40EA-89BF-8EC63B5FE1A9](https://github.com/Superskyyy/bydb/assets/26076517/f66ec43c-e5cf-4392-baa1-83424030558b)
-
+```
 Stream expectedStream = Stream.create(group, task_stream)
         .setEntityRelativeTags("taskId", "taskName")
         .addTagFamily(TagFamilySpec.create("searchable")
@@ -51,7 +51,7 @@ streamWrite.tag("startTime", Value.longTagValue(task.getStartTime()));
 streamWrite.tag("endTime", Value.longTagValue(task.getEndTime()));
 CompletableFuture<Void> future = processor.add(streamWrite);
 			
-			
+```		
 			
 StreamQuery task_query = new StreamQuery(group, task_stream, ImmutableSet.of("taskId", "taskType", "jobId", "numCPU", "startTime", "endTime"));
 task_query.and(PairQueryCondition.StringQueryCondition.eq("jobId", jobId));
