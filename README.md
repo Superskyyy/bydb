@@ -38,16 +38,12 @@ public QueryResponse query_resource_usage(String jobId, String sessionName) {
             task_query.setLimit(2000);
             task_query.setOrderBy(new AbstractQuery.OrderBy("", AbstractQuery.Sort.DESC));
             List<Element> task_elements = client.query(task_query).getElements();
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             for (Element ele : task_elements) {
                 Map<String, Object> item = new HashMap<>();
-                System.out.println("BBBBBBBBBBBBBBBBBBBBBBB");
                 item.put("timestamp", ele.getTimestamp());
                 System.out.println((String) ele.getTagValue(StateConstants.NUM_CPU));
                 item.put("num_cpus", Double.parseDouble(ele.getTagValue(StateConstants.NUM_CPU)));
-                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD");
                 item.put("num_gpus", Double.parseDouble(ele.getTagValue(StateConstants.NUM_GPU)));
-                System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 item.put("num_npus", Double.parseDouble(ele.getTagValue(StateConstants.NUM_NPU)));
                 result.getData().add(item);
             }
