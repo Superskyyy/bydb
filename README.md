@@ -25,5 +25,39 @@ created by github.com/apache/skywalking-banyandb/pkg/bus.(*Bus).Subscribe in gor
 ```
 
 ![image](https://github.com/Superskyyy/bydb/assets/26076517/1624f99e-f10c-4381-af26-48d1fabf7b90)
+```java
+
+public QueryResponse query_resource_usage(String jobId, String sessionName) {
+        QueryResponse result = new QueryResponse();
+        try {
+            StreamQuery task_query = new StreamQuery(DatabaseConfig.GROUPS, StateConstants.JOB_RES_USAGE_STREAM,
+                    ImmutableSet.of(StateConstants.JOB_ID, StateConstants.NUM_CPU, StateConstants.NUM_GPU, StateConstants.NUM_NPU, StateConstants.SESSION_NAME)
+            );
+            task_query.and(PairQueryCondition.StringQueryCondition.eq(StateConstants.JOB_ID, jobId));
+            task_query.and(PairQueryCondition.StringQueryCondition.eq(StateConstants.SESSION_NAME, sessionName));
+            task_query.setLimit(2000);
+            task_query.setOrderBy(new AbstractQuery.OrderBy("", AbstractQuery.Sort.DESC));
+            List<Element> task_elements = client.query(task_query).getElements();
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            for (Element ele : task_elements) {
+                Map<String, Object> item = new HashMap<>();
+                System.out.println("BBBBBBBBBBBBBBBBBBBBBBB");
+                item.put("timestamp", ele.getTimestamp());
+                System.out.println((String) ele.getTagValue(StateConstants.NUM_CPU));
+                item.put("num_cpus", Double.parseDouble(ele.getTagValue(StateConstants.NUM_CPU)));
+                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+                item.put("num_gpus", Double.parseDouble(ele.getTagValue(StateConstants.NUM_GPU)));
+                System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                item.put("num_npus", Double.parseDouble(ele.getTagValue(StateConstants.NUM_NPU)));
+                result.getData().add(item);
+            }
+            result.setMessage("OK");
+        } catch (Exception e) {
+            result.setMessage(e.getMessage());
+        }
+        return result;
+    }
+```
  
 ![image](https://github.com/Superskyyy/bydb/assets/26076517/f719749d-0fd0-4b30-8054-ec84bec26ae8)
+
